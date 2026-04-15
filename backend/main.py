@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
+
+from backend.routers import expenses, upload  # noqa: E402 (load_dotenv 먼저 실행)
 
 app = FastAPI(
     title="영수증 지출관리 API",
@@ -18,6 +19,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(upload.router)
+app.include_router(expenses.router)
 
 
 @app.get("/health", tags=["health"])
