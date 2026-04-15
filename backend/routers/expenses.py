@@ -31,6 +31,15 @@ def list_expenses(from_date: Optional[str] = None, to_date: Optional[str] = None
     return expense_store.get_all(from_date=from_date, to_date=to_date)
 
 
+@router.get("/expenses/{expense_id}")
+def get_expense(expense_id: str):
+    """단일 지출 항목 조회"""
+    expense = expense_store.get_one(expense_id)
+    if expense is None:
+        raise HTTPException(status_code=404, detail="해당 지출 항목을 찾을 수 없습니다.")
+    return expense
+
+
 @router.delete("/expenses/{expense_id}")
 def delete_expense(expense_id: str):
     """지출 항목 삭제"""
